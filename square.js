@@ -13,12 +13,15 @@ class Square {
         this.active = false;
         this.type = '';
 
+        this.visited = false;
+
         this.walls = {
             top: true,
             right: true,
             bottom: true,
             left: true
         }
+
         this.colour = colour
 
     }

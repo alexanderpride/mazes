@@ -20,10 +20,10 @@ class Grid {
                     row,
                     column,
                     {
-                        r: 255,
+                        r: 0,
                         g: 0,
                         b: 0,
-                        a: 25
+                        a: 0
                     },
                     size
                     );
@@ -97,6 +97,32 @@ class Grid {
 
     }
 
+    getMoves(location){
+
+        let moves = [];
+        const cellRow = location.row;
+        const cellColumn = location.column;
+
+
+        const locationSquare = this.map[cellRow][cellColumn];
+
+
+        //Check if cell has top wall
+        if (!locationSquare.walls.top) moves.push(new Coords(cellRow, cellColumn  - 1));
+
+        //Check if cell has bottom wall
+        if (!locationSquare.walls.bottom) moves.push(new Coords(cellRow, cellColumn + 1));
+
+        //Check if cell has left wall
+        if (!locationSquare.walls.left) moves.push(new Coords(cellRow - 1, cellColumn));
+
+        //Check if cell has top wall
+        if (!locationSquare.walls.right) moves.push(new Coords(cellRow + 1, cellColumn));
+
+        return moves;
+
+    }
+
     draw(){
 
         for (let col of this.map){
@@ -109,7 +135,9 @@ class Grid {
                         b: 255,
                         a: 150
                     }
-                } else {
+                }
+
+                if (!sq.active) {
                     sq.colour = {
                         r: 255,
                         g: 0,
