@@ -1,22 +1,22 @@
 class Coords {
-    constructor(row, column) {
+    constructor(x, y) {
 
-        this.row = row;
-        this.column = column;
+        this.x = x;
+        this.y = y;
 
     }
 
     equals(other){
 
-        return this.row === other.row && this.column === other.column;
+        return this.x === other.x && this.y === other.y;
 
     }
 
     distance(other){
 
         // return Math.sqrt(Math.pow(this.row - other.row, 2) + Math.pow(this.column - other.column, 2))
-        const dx = Math.abs(this.row - other.row);
-        const dy = Math.abs(this.column - other.column);
+        const dx = Math.abs(this.x - other.x);
+        const dy = Math.abs(this.y - other.y);
 
         return dx + dy;
     }
@@ -24,24 +24,24 @@ class Coords {
 
 class Point{
 
-    constructor(row, column, cost) {
+    constructor(x, y, cost) {
 
-        this.row = row;
-        this.column = column;
+        this.x = x;
+        this.y = y;
         this.cost = cost;
     }
 
     equals(other){
 
-        return this.row === other.row && this.column === other.column;
+        return this.x === other.x && this.y === other.y;
 
     }
 
     distance(other){
 
         // return Math.sqrt(Math.pow(this.row - other.row, 2) + Math.pow(this.column - other.column, 2))
-        const dx = Math.abs(this.row - other.row);
-        const dy = Math.abs(this.column - other.column);
+        const dx = Math.abs(this.x - other.x);
+        const dy = Math.abs(this.y - other.y);
 
         return dx + dy;
     }

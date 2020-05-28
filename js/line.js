@@ -1,10 +1,11 @@
 class Line {
 
-    constructor(path, estimate) {
+    constructor(path, estimate, size) {
 
         this.path = path;
         this.head = path[path.length - 1];
         this.estimate = estimate;
+        this.size = size;
 
     }
 
@@ -19,7 +20,10 @@ class Line {
             const nextPoint = this.path[i + 1];
 
 
-            line(currentPoint.row * 24 + 12, currentPoint.column * 24 + 12, nextPoint.row * 24 + 12, nextPoint.column * 24 + 12)
+            line(currentPoint.x * size + size / 2,
+                currentPoint.y * size + size / 2,
+                nextPoint.x * size + size / 2,
+                nextPoint.y * size + size / 2);
 
         }
 

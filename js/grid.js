@@ -1,34 +1,28 @@
 class Grid {
 
-    constructor(rows, columns, size) {
+    constructor(n_x, n_y, size) {
 
         this.map = [];
-        this.rows = rows;
-        this.columns = columns;
+        this.n_x = n_x;
+        this.n_y = n_y;
 
 
         //Fills the grid with squares
-        for (let row = 0; row < rows; row ++){
+        for (let x = 0; x < n_x; x ++){
 
             this.map.push([]);
 
-            for (let column = 0; column < columns; column ++){
+            for (let y = 0; y < n_y; y ++){
 
                 const _square = new Square(
-                    row * size,
-                    column * size,
-                    row,
-                    column,
-                    {
-                        r: 0,
-                        g: 0,
-                        b: 0,
-                        a: 0
-                    },
+                    x * size,
+                    y * size,
+                    x,
+                    y,
                     size
                     );
 
-                this.map[row].push(_square);
+                this.map[x].push(_square);
 
             }
 
@@ -38,60 +32,60 @@ class Grid {
 
     removeWalls(coordsA, coordsB){
 
-        const aRow = coordsA.row, aCol = coordsA.column, bRow = coordsB.row, bCol = coordsB.column
+        const aX = coordsA.x, aY = coordsA.y, bX = coordsB.x, bY = coordsB.y;
 
         // If A is above B
-        if(aCol - bCol === -1){
+        if(aY - bY === -1){
 
-            this.map[aRow][aCol].walls.bottom = false;
-            this.map[bRow][bCol].walls.top = false;
+            this.map[aX][aY].walls.bottom = false;
+            this.map[bX][bY].walls.top = false;
 
         }
 
         // If A is below B
-        if(aCol - bCol === 1){
+        if(aY - bY === 1){
 
-            this.map[aRow][aCol].walls.top = false;
-            this.map[bRow][bCol].walls.bottom = false;
+            this.map[aX][aY].walls.top = false;
+            this.map[bX][bY].walls.bottom = false;
 
         }
 
         // If A is to the left of B
-        if (aRow - bRow === -1){
+        if (aX - bX === -1){
 
-            this.map[aRow][aCol].walls.right = false;
-            this.map[bRow][bCol].walls.left = false;
+            this.map[aX][aY].walls.right = false;
+            this.map[bX][bY].walls.left = false;
 
         }
 
         // If A is to the right of B
-        if (aRow - bRow === 1){
+        if (aX - bX === 1){
 
-            this.map[aRow][aCol].walls.left = false;
-            this.map[bRow][bCol].walls.right = false;
+            this.map[aX][aY].walls.left = false;
+            this.map[bX][bY].walls.right = false;
 
         }
 
 
     }
 
-    getNeighbours(coords){
+     getNeighbours(coords){
 
         let _neighbours = [];
-        const cellRow = coords.row;
-        const cellColumn = coords.column;
+        const x = coords.x;
+        const y = coords.y;
 
        //Check if cell is not in the top row
-       if (cellRow > 0) _neighbours.push(new Coords(cellRow - 1, cellColumn));
+       if (x > 0) _neighbours.push(new Coords(x - 1, y));
 
        //Check if cell is not in the bottom column
-        if (cellRow < this.rows - 1) _neighbours.push(new Coords(cellRow + 1, cellColumn));
+        if (x < this.n_x - 1) _neighbours.push(new Coords(x + 1, y));
 
         //Check if cell is not in the leftmost column
-       if (cellColumn > 0) _neighbours.push(new Coords(cellRow, cellColumn - 1));
+       if (y > 0) _neighbours.push(new Coords(x, y - 1));
 
        //Check if cell is not in the bottom column
-        if (cellColumn < this.columns - 1) _neighbours.push(new Coords(cellRow, cellColumn + 1));
+        if (y < this.n_y - 1) _neighbours.push(new Coords(x, y + 1));
 
         return _neighbours;
 
@@ -100,24 +94,24 @@ class Grid {
     getMoves(location){
 
         let moves = [];
-        const cellRow = location.row;
-        const cellColumn = location.column;
+        const x = location.x;
+        const y = location.y;
 
 
-        const locationSquare = this.map[cellRow][cellColumn];
+        const locationSquare = this.map[x][y];
 
 
         //Check if cell has top wall
-        if (!locationSquare.walls.top) moves.push(new Coords(cellRow, cellColumn  - 1));
+        if (!locationSquare.walls.top) moves.push(new Coords(x, y  - 1));
 
         //Check if cell has bottom wall
-        if (!locationSquare.walls.bottom) moves.push(new Coords(cellRow, cellColumn + 1));
+        if (!locationSquare.walls.bottom) moves.push(new Coords(x, y + 1));
 
         //Check if cell has left wall
-        if (!locationSquare.walls.left) moves.push(new Coords(cellRow - 1, cellColumn));
+        if (!locationSquare.walls.left) moves.push(new Coords(x - 1, y));
 
         //Check if cell has top wall
-        if (!locationSquare.walls.right) moves.push(new Coords(cellRow + 1, cellColumn));
+        if (!locationSquare.walls.right) moves.push(new Coords(x + 1, y));
 
         return moves;
 
@@ -128,63 +122,8 @@ class Grid {
         for (let col of this.map){
             for (let sq of col){
 
-                if (sq.active) {
-                    sq.colour = {
-                        r: 0,
-                        g: 0,
-                        b: 255,
-                        a: 150
-                    }
-                }
-
-                if (!sq.active) {
-                    sq.colour = {
-                        r: 255,
-                        g: 0,
-                        b: 255,
-                        a: sq.alpha
-                    }
-                }
-
-                if (sq.type === "start"){
-                    sq.colour = {
-                        r: 255,
-                        g: 0,
-                        b: 0,
-                        a: 150
-                    }
-                }
-
-                if (sq.type === "candidate"){
-                    sq.colour = {
-                        r: 0,
-                        g: 255,
-                        b: 0,
-                        a: 50
-                    }
-                }
-
-                if (sq.type === "end"){
-                    sq.colour = {
-                        r: 0,
-                        g: 255,
-                        b: 0,
-                        a: 150
-                    }
-                }
-
-                if (sq.type === "test"){
-                    sq.colour = {
-                        r: 255,
-                        g: 255,
-                        b: 0,
-                        a: 150
-                    }
-                }
-
-
-
                 sq.draw();
+
             }
         }
 

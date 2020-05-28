@@ -1,8 +1,8 @@
 class BacktrackGenerator{
 
-    constructor(rows, columns, size, startSquare, endSquare) {
+    constructor(n_x, n_y, size, startSquare, endSquare) {
 
-        this.maze = new Grid(rows, columns, size);
+        this.maze = new Grid(n_x, n_y, size);
 
         this.startSquare = startSquare;
         this.endSquare = endSquare;
@@ -11,9 +11,6 @@ class BacktrackGenerator{
         this.currentCell;
         this.visited = [this.drawStartSquare];
         this.stack = [this.drawStartSquare];
-
-        this.maze.map[this.startSquare.row][this.startSquare.column].type = "start";
-        this.maze.map[this.endSquare.row][this.endSquare.column].type = "end";
 
         this.generationComplete = false;
 
@@ -24,13 +21,15 @@ class BacktrackGenerator{
         // Step 2: While the stack is not empty
         if (this.stack.length > 0) {
 
-            if (this.currentCell) this.maze.map[this.currentCell.row][this.currentCell.column].active = false;
+            if (this.currentCell) this.maze.map[this.currentCell.x][this.currentCell.y].colour = undefined;
 
             // Step 2.1
             this.currentCell = this.stack.pop();
 
             // Set active for styling purposes
-            this.maze.map[this.currentCell.row][this.currentCell.column].active = true;
+            this.maze.map[this.currentCell.x][this.currentCell.y].colour = {r: 0, g: 0, b: 255};
+            this.maze.map[this.startSquare.x][this.startSquare.y].colour = {r: 255, g: 0, b: 0};
+            this.maze.map[this.endSquare.x][this.endSquare.y].colour = {r: 0, g: 255, b: 0};
 
             // if (heatmap === "true") maze.map[currentCell.row][currentCell.column].alpha += 30;
 
@@ -74,9 +73,6 @@ class BacktrackGenerator{
             this.generationComplete = true;
 
         }
-
-
-
 
 
     }

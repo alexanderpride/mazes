@@ -1,14 +1,16 @@
 class AStarTraversal {
 
-    constructor(maze, startNode, endNode){
+    constructor(maze, startNode, endNode, lineScale){
 
         this.maze = maze;
-        this.frontier = [new Line([new Point(startNode.row, startNode.column, 0)], 0)];
+        this.frontier = [new Line([new Point(startNode.x, startNode.y, 0)], 0, lineScale)];
         this.visited = [];
 
         this.endNode = endNode;
         this.traversalComplete = false;
         this.currentPath;
+
+        this.lineScale = this.lineScale;
 
     }
 
@@ -91,7 +93,7 @@ class AStarTraversal {
                         const heuristic = move.distance(this.endNode);
                         const estimate = heuristic + cost;
 
-                        const _line = new Line([...this.currentPath.path, new Point(move.row, move.column, cost)], estimate);
+                        const _line = new Line([...this.currentPath.path, new Point(move.x, move.y, cost)], estimate, this.lineScale);
 
                         this.addToHeap(_line);
 
