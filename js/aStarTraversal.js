@@ -10,15 +10,16 @@ class AStarTraversal {
         this.traversalComplete = false;
         this.currentPath;
 
-        this.lineScale = this.lineScale;
+        this.lineScale = lineScale;
 
     }
 
     draw(){
 
+
         if (this.currentPath){
 
-            this.currentPath.drawLine();
+            this.currentPath.drawLine({r: 0, g: 255, b: 255}, this.lineScale, 0.5);
 
         }
 

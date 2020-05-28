@@ -9,14 +9,16 @@ let size = parseInt(urlParams.get('size'), 10) || 24;
 let fr = parseInt(urlParams.get('framerate'), 10);
 let heatmap = urlParams.get('heatmap');
 
-let mazeStartSquare = new Coords(0, 0);
-let mazeEndSquare = new Coords(n_x - 1, n_y - 1);
+let mazeStartSquare = new Coords(Math.round(Math.random() * (n_x - 1)), Math.round(Math.random() * (n_y - 1)));
+let mazeEndSquare = new Coords(Math.round(Math.random() * (n_x - 1)), Math.round(Math.random() * (n_y - 1)));
 
 let generator = new BacktrackGenerator(n_x, n_y, size, mazeStartSquare, mazeEndSquare);
-let traversal;
+let aStarTraversal;
+let depthFirstTraversal;
+let breadthFirstTraversal;
 
 let generatorJustCompleted = true;
-let traversalJustCompleted = true;
+
 
 
 function setup() {
@@ -29,7 +31,6 @@ function setup() {
     frameRate(fr);
   }
 
-  // frameRate(2);
 
   }
 
@@ -44,13 +45,20 @@ function draw() {
 
   } else if (generatorJustCompleted){
 
-    traversal = new AStarTraversal(generator.maze, mazeStartSquare, mazeEndSquare, size);
+    aStarTraversal = new AStarTraversal(generator.maze, mazeStartSquare, mazeEndSquare, size);
+    depthFirstTraversal = new DepthFirstTraversal(generator.maze, mazeStartSquare, mazeEndSquare, size);
+    breadthFirstTraversal = new BreadthFirstTraversal(generator.maze, mazeStartSquare, mazeEndSquare, size);
+
     generatorJustCompleted = false;
 
   } else {
 
-    traversal.step();
-    traversal.draw();
+    aStarTraversal.step();
+    aStarTraversal.draw();
+    depthFirstTraversal.step();
+    depthFirstTraversal.draw();
+    breadthFirstTraversal.step();
+    breadthFirstTraversal.draw();
 
   }
 
